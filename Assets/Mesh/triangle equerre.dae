@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 2.79.0 commit date:2018-03-22, commit time:14:10, hash:f4dc9f9d68b</authoring_tool>
+    </contributor>
+    <created>2018-09-26T21:56:45</created>
+    <modified>2018-09-26T21:56:45</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_images/>
+  <library_effects/>
+  <library_geometries>
+    <geometry id="triangle_equerre-mesh" name="triangle equerre">
+      <mesh>
+        <source id="triangle_equerre-mesh-positions">
+          <float_array id="triangle_equerre-mesh-positions-array" count="18">-0.70273 -1.006855 -0.70273 -0.70273 -1.006855 1.31098 -0.70273 1.006855 -0.70273 -0.70273 1.006855 1.31098 1.31098 -1.006855 -0.70273 1.31098 1.006855 -0.70273</float_array>
+          <technique_common>
+            <accessor source="#triangle_equerre-mesh-positions-array" count="6" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="triangle_equerre-mesh-normals">
+          <float_array id="triangle_equerre-mesh-normals-array" count="15">-1 0 0 0.7071068 0 0.7071068 0 1 0 0 -1 0 0 0 -1</float_array>
+          <technique_common>
+            <accessor source="#triangle_equerre-mesh-normals-array" count="5" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="triangle_equerre-mesh-map-0">
+          <float_array id="triangle_equerre-mesh-map-0-array" count="48">0.3463371 0.9978132 0.6616227 0.6634024 0.6616227 0.9978132 0.4959892 0.02739268 0.1802275 0.5000029 0.180704 0.02707505 0.6645529 0.3265637 0.6640989 0.002189934 0.9895405 0.3256938 0.6616225 0.3289915 0.6616225 0.6634023 0.3463371 0.6634023 0.976908 0.3289915 0.6616227 0.6634023 0.6616225 0.3289915 0.3463371 0.9978132 0.3463371 0.6634024 0.6616227 0.6634024 0.4959892 0.02739268 0.4955126 0.5003206 0.1802275 0.5000029 0.976908 0.3289915 0.976908 0.6634023 0.6616227 0.6634023</float_array>
+          <technique_common>
+            <accessor source="#triangle_equerre-mesh-map-0-array" count="24" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="triangle_equerre-mesh-vertices">
+          <input semantic="POSITION" source="#triangle_equerre-mesh-positions"/>
+        </vertices>
+        <triangles count="8">
+          <input semantic="VERTEX" source="#triangle_equerre-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#triangle_equerre-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#triangle_equerre-mesh-map-0" offset="2" set="0"/>
+          <p>1 0 0 2 0 1 0 0 2 1 1 3 5 1 4 3 1 5 2 2 6 3 2 7 5 2 8 1 3 9 0 3 10 4 3 11 5 4 12 0 4 13 2 4 14 1 0 15 3 0 16 2 0 17 1 1 18 4 1 19 5 1 20 5 4 21 4 4 22 0 4 23</p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_controllers/>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="triangle_equerre" name="triangle_equerre" type="NODE">
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+        <instance_geometry url="#triangle_equerre-mesh" name="triangle_equerre"/>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>
