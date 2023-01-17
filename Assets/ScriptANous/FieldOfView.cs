@@ -16,6 +16,8 @@ public class FieldOfView : MonoBehaviour
     public bool canSeePlayer;
 
     Vector3 mouvement;
+    Vector3 rotation;
+    Vector3 directionToTarget;
 
     public float vitesse = 0.3f;
 
@@ -48,7 +50,7 @@ public class FieldOfView : MonoBehaviour
         if (rangeChecks.Length != 0)
         {
             Transform target = rangeChecks[0].transform;
-            Vector3 directionToTarget = (target.position - transform.position).normalized;
+            directionToTarget = (target.position - transform.position).normalized;
 
             if (Vector3.Angle(transform.forward, directionToTarget) < angle / 2)
             {
@@ -59,9 +61,9 @@ public class FieldOfView : MonoBehaviour
                     canSeePlayer = true;
 
                     print("PLAYER !");
-                    this.transform.position = target.transform.position;
-                    mouvement = new Vector3(this.transform.position.x * vitesse, 0, this.transform.position.z * vitesse) ;
-                   // this.gameObject.Move(mouvement);
+                    mouvement = new Vector3((target.position.x -transform.position.x), 0, (target.position.z - transform.position.z));
+                    mouvement = mouvement.normalized;
+                    rotation = new Vector3(target.position.x, 1, target.position.z);
                 }
                 else
                 {
@@ -81,6 +83,14 @@ public class FieldOfView : MonoBehaviour
 
     private void FixedUpdate()
     {
-            
+        if (canSeePlayer == true)
+        {
+            rb.velocity = mouvement*vitesse;
+            transform.LookAt(rotation);
+        }
+        else
+        {
+            transform.LookAt(new Vector3(0, 0, 0));
+        }
     }
 }
