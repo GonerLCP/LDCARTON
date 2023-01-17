@@ -14,6 +14,8 @@ public class FieldOfView : MonoBehaviour
     public LayerMask obstructionMask;
 
     public bool canSeePlayer;
+    public bool touchalt144;
+    public bool tocard;
 
     Vector3 mouvement;
     Vector3 rotation;
@@ -22,6 +24,12 @@ public class FieldOfView : MonoBehaviour
     public float vitesse = 0.3f;
 
     Rigidbody rb;
+    public Transform atlook;
+    public Transform rammener;
+    public Transform grab;
+    public Transform spawnPoint;
+
+    public GameObject Player;
 
     // Start is called before the first frame update
     void Start()
@@ -83,14 +91,42 @@ public class FieldOfView : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (canSeePlayer == true)
+        bool unefois = false;
+
+        if (canSeePlayer == true && touchalt144 == false && tocard == false)
         {
             rb.velocity = mouvement*vitesse;
             transform.LookAt(rotation);
+            unefois = true;
         }
-        else
+        else if(unefois == true) //Dans le cas ou on sort de sa vision pour qu'il regarde devant lui, on le fait une fois pour éviter qu'il coto
         {
-            transform.LookAt(new Vector3(0, 0, 0));
+            transform.LookAt(atlook.position);
+            unefois = false;
+        }
+
+        if (touchalt144)
+        {
+            Vector3 destination = new Vector3(rammener.position.x - transform.position.x, 0, rammener.position.z - transform.position.z)*vitesse;
+            rb.velocity = destination.normalized*vitesse;
+            transform.LookAt(rammener.position);
+            Player.transform.position = grab.transform.position;
+        }
+
+        if (tocard)
+        {
+            Vector3 Spawn = new Vector3(spawnPoint.position.x - transform.position.x, 0, spawnPoint.position.z - transform.position.z) * vitesse;
+            rb.velocity = Spawn.normalized * vitesse;
+            transform.LookAt(spawnPoint.position);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.tag == "Player")
+        {
+            touchalt144 = true;
+            canSeePlayer = false;
         }
     }
 }
