@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
         {
             mouvementY = 0;
         }
-        mouvement = new Vector3(inputX, 0, inputZ)*vitesse;
+        mouvement = Quaternion.Euler(new Vector3(0, 45, 0)) * new Vector3(inputX, 0, inputZ) * vitesse;
         cc.Move(mouvement);
         mouvementY -= gravity;
         cc.Move(new Vector3(0, mouvementY, 0));
