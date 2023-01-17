@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
     float inputX;
     float inputZ;
     CharacterController cc;
-    public Transform empty;
 
     float mouvementY = 0;
     float gravity = 0.09f;
@@ -31,7 +30,6 @@ public class Player : MonoBehaviour
         if (toucheSol && mouvementY < 0)
         {
             mouvementY = 0;
-            print("o");
         }
         mouvement = new Vector3(inputX, 0, inputZ)*vitesse;
         cc.Move(mouvement);

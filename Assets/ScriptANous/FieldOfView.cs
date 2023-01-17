@@ -15,11 +15,18 @@ public class FieldOfView : MonoBehaviour
 
     public bool canSeePlayer;
 
+    Vector3 mouvement;
+
+    public float vitesse = 0.3f;
+
+    Rigidbody rb;
+
     // Start is called before the first frame update
     void Start()
     {
         playerRef = GameObject.FindGameObjectWithTag("Player");
         StartCoroutine(FOVRoutine());
+        rb = GetComponent<Rigidbody>();
     }
 
     private IEnumerator FOVRoutine()
@@ -50,6 +57,11 @@ public class FieldOfView : MonoBehaviour
                 if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionMask))
                 {
                     canSeePlayer = true;
+
+                    print("PLAYER !");
+                    this.transform.position = target.transform.position;
+                    mouvement = new Vector3(this.transform.position.x * vitesse, 0, this.transform.position.z * vitesse) ;
+                   // this.gameObject.Move(mouvement);
                 }
                 else
                 {
@@ -65,5 +77,10 @@ public class FieldOfView : MonoBehaviour
         {
             canSeePlayer = false;
         }
+    }
+
+    private void FixedUpdate()
+    {
+            
     }
 }
