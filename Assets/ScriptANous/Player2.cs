@@ -21,14 +21,39 @@ public class Player2 : MonoBehaviour
     public float vitesse = 0.3f;
 
     public Transform grab;
+
+    string[] taglist = {"Player","Carton"};
+    int x = 1;
     void Start()
     {
         cc = GetComponent<CharacterController>();
+        GameObject.Find("PlayerCarton").GetComponent<MeshRenderer>().enabled = false;
     }
     void Update()
     {
         inputX = Input.GetAxis("Horizontal");
         inputZ = Input.GetAxis("Vertical");
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+
+            this.tag = taglist[x];
+            if (x==1) //si tag carton atm alors prochaine sera tag player
+            {
+                x = x - 1;
+                GameObject.Find("PlayerBonhomme").GetComponent<MeshRenderer>().enabled = false;
+                GameObject.Find("PlayerBonhommeCylinder").GetComponent<MeshRenderer>().enabled = false;
+                GameObject.Find("PlayerCarton").GetComponent<MeshRenderer>().enabled = true; 
+            }
+            else
+            {
+                x++;
+                GameObject.Find("PlayerBonhomme").GetComponent<MeshRenderer>().enabled = true;
+                GameObject.Find("PlayerBonhommeCylinder").GetComponent<MeshRenderer>().enabled = true;
+                GameObject.Find("PlayerCarton").GetComponent<MeshRenderer>().enabled = false;
+            }
+
+        }
+
     }
     private void FixedUpdate()
     {

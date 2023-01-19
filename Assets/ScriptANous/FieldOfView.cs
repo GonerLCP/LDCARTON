@@ -28,14 +28,18 @@ public class FieldOfView : MonoBehaviour
     public Transform rammener;
     public Transform grab;
     public Transform spawnPoint;
+    public List<Transform> PositionRonde;
+    Transform PositionProchaineRonde;
 
     public GameObject Player;
 
+    int y =0;
     // Start is called before the first frame update
     void Start()
     {
         playerRef = GameObject.FindGameObjectWithTag("Player");
         StartCoroutine(FOVRoutine());
+       // StartCoroutine(RondeRoutine());
         rb = GetComponent<Rigidbody>();
     }
 
@@ -48,6 +52,18 @@ public class FieldOfView : MonoBehaviour
         {
             yield return wait;
             FieldOfViewCheck();
+        }
+    }
+
+    private IEnumerator RondeRoutine()
+    {
+        float delay = 0.2f;
+        WaitForSeconds wait = new WaitForSeconds(delay);
+
+        while (true)
+        {
+            yield return wait;
+            Ronde();
         }
     }
 
@@ -93,7 +109,7 @@ public class FieldOfView : MonoBehaviour
     {
         bool unefois = false;
 
-        if (canSeePlayer == true && touchalt144 == false && JoueurRammene == false)
+        if (canSeePlayer == true && touchalt144 == false && JoueurRammene == false && GameObject.Find("Player").tag =="Player") //Si le perso est dans sa "ronde" et qu'il voit le perso , alors lui fonce dessus
         {
             rb.velocity = mouvement*vitesse;
             transform.LookAt(rotation);
@@ -105,7 +121,7 @@ public class FieldOfView : MonoBehaviour
             unefois = false;
         }
 
-        if (touchalt144)
+        if (touchalt144) //S'il à touché le perso, il l'enmenne à la position rammenner (game object dans la scène) 
         {
             Vector3 destination = new Vector3(rammener.position.x - transform.position.x, 0, rammener.position.z - transform.position.z)*vitesse;
             rb.velocity = destination.normalized*vitesse;
@@ -113,11 +129,18 @@ public class FieldOfView : MonoBehaviour
             Player.transform.position = grab.transform.position;
         }
 
-        if (JoueurRammene)
+        if (JoueurRammene)//Quand guard arrivé à point de rammennage, alors il retourne à sa position de base
         {
             Vector3 Spawn = new Vector3(spawnPoint.position.x - transform.position.x, 0, spawnPoint.position.z - transform.position.z) * vitesse;
             rb.velocity = Spawn.normalized * vitesse;
             transform.LookAt(spawnPoint.position);
+        }
+
+        if ((canSeePlayer && touchalt144 && JoueurRammene) == false)
+        {
+            Vector3 destination = new Vector3(PositionProchaineRonde.position.x - transform.position.x, 1, PositionProchaineRonde.position.z - transform.position.z) * vitesse;
+            rb.velocity = destination.normalized * vitesse;
+            transform.LookAt(PositionProchaineRonde.position);
         }
     }
 
@@ -128,26 +151,41 @@ public class FieldOfView : MonoBehaviour
             touchalt144 = true;
             canSeePlayer = false;
         }
-
-
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "PointRammener")
+        if (other.tag == "PointRammener") //Si arrivé à destination de rammenage
         {
             canSeePlayer = false;
             touchalt144 = false;
             JoueurRammene = true;
         }
 
-        if (other.tag == "PointSpawnGuard")
+        if (other.tag == "PointSpawnGuard") //Si arrivé à position de base
         {
             canSeePlayer = false;
             touchalt144 = false;
             JoueurRammene = false;
             rb.velocity = new Vector3(0,0,0);
             transform.LookAt(new Vector3(0,1,0));
+            Transform PositionProchaineRonde = PositionRonde[0];
         }
+
+        if (other.tag == "PointRondeGuard") //Si arrivé à position de base
+        {
+            if (y==PositionRonde.Capacity)
+            {
+                y = 0;
+            }
+            else { y++; }
+            Transform PositionProchaineRonde = PositionRonde[y];
+        }
+    }
+
+    private void Ronde()
+    {
+
+
     }
 }
