@@ -10,7 +10,7 @@ public class Rammenner : MonoBehaviour
         if (other.tag == "Ennemy")
         {
             Field.touchalt144 = false;
-            Field.tocard = true;
+            Field.JoueurRammene = true;
         }
     }
 }

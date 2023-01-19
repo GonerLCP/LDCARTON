@@ -15,7 +15,7 @@ public class FieldOfView : MonoBehaviour
 
     public bool canSeePlayer;
     public bool touchalt144;
-    public bool tocard;
+    public bool JoueurRammene;
 
     Vector3 mouvement;
     Vector3 rotation;
@@ -93,7 +93,7 @@ public class FieldOfView : MonoBehaviour
     {
         bool unefois = false;
 
-        if (canSeePlayer == true && touchalt144 == false && tocard == false)
+        if (canSeePlayer == true && touchalt144 == false && JoueurRammene == false)
         {
             rb.velocity = mouvement*vitesse;
             transform.LookAt(rotation);
@@ -113,7 +113,7 @@ public class FieldOfView : MonoBehaviour
             Player.transform.position = grab.transform.position;
         }
 
-        if (tocard)
+        if (JoueurRammene)
         {
             Vector3 Spawn = new Vector3(spawnPoint.position.x - transform.position.x, 0, spawnPoint.position.z - transform.position.z) * vitesse;
             rb.velocity = Spawn.normalized * vitesse;
@@ -127,6 +127,27 @@ public class FieldOfView : MonoBehaviour
         {
             touchalt144 = true;
             canSeePlayer = false;
+        }
+
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "PointRammener")
+        {
+            canSeePlayer = false;
+            touchalt144 = false;
+            JoueurRammene = true;
+        }
+
+        if (other.tag == "PointSpawnGuard")
+        {
+            canSeePlayer = false;
+            touchalt144 = false;
+            JoueurRammene = false;
+            rb.velocity = new Vector3(0,0,0);
+            transform.LookAt(new Vector3(0,1,0));
         }
     }
 }
