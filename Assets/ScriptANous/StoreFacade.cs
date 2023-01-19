@@ -9,14 +9,18 @@ public class StoreFacade : MonoBehaviour
     public GameObject objetFacadeBoulanger;
     public GameObject objetFacadeGarde;
 
-    // var est-ce que j'ai une facade ou pas ?
+    // var est-ce que touche cette facade ?
     bool gotFacadeRiche;
     bool gotFacadeBoulanger;
     bool gotFacadeGarde;
+
+    // oui-non, je suis dans le trigger d'un objet qui est une facade
     bool jeSuisDansUneFacade;
+
 
     public GameObject facadeActuelleToDestroy;
     string facadeActuelle;
+    bool objetEstDetruit = false;
 
     void Start()
     {
@@ -26,26 +30,42 @@ public class StoreFacade : MonoBehaviour
  
     void Update()
     {
-        
 
-
-       
+        if (gotFacadeRiche && Input.GetKeyDown(KeyCode.E) && objetEstDetruit == true )
+        {
+            objetEstDetruit = false;
+            Instantiate(objetFacadeRiche);
+            gotFacadeRiche = false;
+        }
 
         //si j'ai touche la facade riche, je peux appuyer sur E pour détruire l'object touche
         //manque zone appuyable que dans la zone de l'objet pour le "manger"
         //manque coordonee pour l'objet instantie.
         if (jeSuisDansUneFacade == true)
         {
-            if (gotFacadeRiche == true && Input.GetKeyDown(KeyCode.E))
+            if (facadeActuelle == "facadeRiche" && Input.GetKeyDown(KeyCode.E))
             {
-                //Instantiate(objetFacadeRiche);
-                gotFacadeRiche = false;
-                Destroy(facadeActuelleToDestroy);
                 
+                Destroy(facadeActuelleToDestroy);
+                objetEstDetruit = true;
 
             }
+
+            else if (facadeActuelle == "facadeBoulanger" && Input.GetKeyDown(KeyCode.E))
+            {
+                Destroy(facadeActuelleToDestroy);
+                objetEstDetruit = true;
+            }
+
+            else if (facadeActuelle == "facadeGarde" && Input.GetKeyDown(KeyCode.E))
+            {
+                Destroy(facadeActuelleToDestroy);
+                objetEstDetruit = true;
+            }
         }
-        
+
+
+
     }
 
     private void OnTriggerEnter(Collider collision)
@@ -54,10 +74,13 @@ public class StoreFacade : MonoBehaviour
         {
             
             jeSuisDansUneFacade = true;
+            
 
             //je recup ma variable d'un autre script et je lui donne un nouveau nom
             facadeActuelle = collision.gameObject.GetComponent<facadeRamassable>().nomFacade;
             facadeActuelleToDestroy = collision.gameObject;
+
+            print(facadeActuelleToDestroy);
 
             print(facadeActuelle);
 
@@ -87,27 +110,15 @@ public class StoreFacade : MonoBehaviour
         
             //je lui dis de recup la var facade actuelle sur le scirpt du cube
 
-            facadeActuelleToDestroy = null;
+            //facadeActuelleToDestroy = null;
+            facadeActuelle = null;
 
-            print(facadeActuelle);
 
             jeSuisDansUneFacade = false;
 
-            // quand je rentre dans la zone de la facade,je passe ma variable "j'ai l'objet" en true
-            if (facadeActuelle == "facadeRiche")
-            {
-                gotFacadeRiche = false;
-            }
+            print(jeSuisDansUneFacade);
 
-            else if (facadeActuelle == "facadeGarde")
-            {
-                gotFacadeGarde = false;
-            }
-
-            else if (facadeActuelle == "facadeBoulanger")
-            {
-                gotFacadeBoulanger = false;
-            }
+            
         }
     }
 }
