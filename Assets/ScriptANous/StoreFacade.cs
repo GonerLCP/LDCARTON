@@ -10,17 +10,18 @@ public class StoreFacade : MonoBehaviour
     public GameObject objetFacadeGarde;
 
     // var est-ce que touche cette facade ?
-    bool gotFacadeRiche;
-    bool gotFacadeBoulanger;
-    bool gotFacadeGarde;
+    public bool gotFacadeRiche;
+    public bool gotFacadeBoulanger;
+    public bool gotFacadeGarde;
 
     // oui-non, je suis dans le trigger d'un objet qui est une facade
-    bool jeSuisDansUneFacade;
-
+    public bool jeSuisDansUneFacade;
 
     public GameObject facadeActuelleToDestroy;
-    string facadeActuelle;
-    bool objetEstDetruit = false;
+    public string facadeActuelle;
+    public bool objetEstDetruit = false;
+
+    public Transform spawner;
 
     void Start()
     {
@@ -30,17 +31,30 @@ public class StoreFacade : MonoBehaviour
  
     void Update()
     {
-
-        if (gotFacadeRiche && Input.GetKeyDown(KeyCode.E) && objetEstDetruit == true )
+        // instancier l'objet
+        if (gotFacadeRiche == true && Input.GetKeyDown(KeyCode.E) && objetEstDetruit == true)
         {
             objetEstDetruit = false;
-            Instantiate(objetFacadeRiche);
+            Instantiate(objetFacadeRiche,spawner.position,spawner.rotation);
             gotFacadeRiche = false;
         }
 
-        //si j'ai touche la facade riche, je peux appuyer sur E pour détruire l'object touche
-        //manque zone appuyable que dans la zone de l'objet pour le "manger"
-        //manque coordonee pour l'objet instantie.
+        if (gotFacadeBoulanger == true && Input.GetKeyDown(KeyCode.E) && objetEstDetruit == true)
+        {
+            objetEstDetruit = false;
+            Instantiate(objetFacadeBoulanger, spawner.position, spawner.rotation);
+            gotFacadeBoulanger = false;
+        }
+
+        if (gotFacadeGarde == true && Input.GetKeyDown(KeyCode.E) && objetEstDetruit == true)
+        {
+            objetEstDetruit = false;
+            Instantiate(objetFacadeGarde, spawner.position, spawner.rotation);
+            gotFacadeGarde = false;
+        }
+
+        
+        // detruire l'objet
         if (jeSuisDansUneFacade == true)
         {
             if (facadeActuelle == "facadeRiche" && Input.GetKeyDown(KeyCode.E))
@@ -48,6 +62,9 @@ public class StoreFacade : MonoBehaviour
                 
                 Destroy(facadeActuelleToDestroy);
                 objetEstDetruit = true;
+                gotFacadeRiche = true;
+                jeSuisDansUneFacade = false;
+                facadeActuelle = null;
 
             }
 
@@ -55,14 +72,22 @@ public class StoreFacade : MonoBehaviour
             {
                 Destroy(facadeActuelleToDestroy);
                 objetEstDetruit = true;
+                gotFacadeBoulanger = true;
+                jeSuisDansUneFacade = false;
+                facadeActuelle = null;
             }
 
             else if (facadeActuelle == "facadeGarde" && Input.GetKeyDown(KeyCode.E))
             {
                 Destroy(facadeActuelleToDestroy);
                 objetEstDetruit = true;
+                gotFacadeGarde = true;
+                jeSuisDansUneFacade = false;
+                facadeActuelle = null;
             }
         }
+
+        
 
 
 
@@ -80,10 +105,7 @@ public class StoreFacade : MonoBehaviour
             facadeActuelle = collision.gameObject.GetComponent<facadeRamassable>().nomFacade;
             facadeActuelleToDestroy = collision.gameObject;
 
-            print(facadeActuelleToDestroy);
-
-            print(facadeActuelle);
-
+            /*
             // quand je rentre dans la zone de la facade,je passe ma variable "j'ai l'objet" en true
             if (facadeActuelle == "facadeRiche")
             {
@@ -99,6 +121,7 @@ public class StoreFacade : MonoBehaviour
             {
                 gotFacadeBoulanger = true;
             }
+            */
          }
     }
 
@@ -110,13 +133,13 @@ public class StoreFacade : MonoBehaviour
         
             //je lui dis de recup la var facade actuelle sur le scirpt du cube
 
-            //facadeActuelleToDestroy = null;
+            facadeActuelleToDestroy = null;
             facadeActuelle = null;
 
 
             jeSuisDansUneFacade = false;
 
-            print(jeSuisDansUneFacade);
+            
 
             
         }
