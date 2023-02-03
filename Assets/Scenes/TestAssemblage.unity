@@ -765,12 +765,12 @@ GameObject:
   - component: {fileID: 629574211}
   - component: {fileID: 629574210}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: GardeGardantLentreeWIP
   m_TagString: Ennemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &629574210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -785,10 +785,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 13
   angle: 49
-  playerRef: {fileID: 6008012809877843615, guid: b1abc0c8040289a498b7acd5091bcede, type: 3}
+  playerRef: {fileID: 6008012809877843615, guid: 7891d2bea7bbd8b4a8c8146dcb49c96a, type: 3}
   targetMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 512
   obstructionMask:
     serializedVersion: 2
     m_Bits: 256

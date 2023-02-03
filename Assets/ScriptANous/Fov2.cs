@@ -18,7 +18,7 @@ public class Fov2 : MonoBehaviour
 
     private void Start()
     {
-        playerRef = GameObject.FindGameObjectWithTag("Panneau");
+        playerRef = GameObject.FindGameObjectWithTag("Carton");
         StartCoroutine(FOVRoutine());
     }
 

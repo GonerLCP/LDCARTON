@@ -34,7 +34,7 @@ public class PlayerFusion : MonoBehaviour
     {
         inputX = Input.GetAxis("Horizontal");
         inputZ = Input.GetAxis("Vertical");
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.A))
         {
 
             this.tag = taglist[x];
