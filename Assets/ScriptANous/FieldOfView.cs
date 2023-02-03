@@ -30,6 +30,7 @@ public class FieldOfView : MonoBehaviour
     public Transform spawnPoint;
     public List<Transform> PositionRonde;
     Transform PositionProchaineRonde;
+    Transform PositionPremiereRonde;
 
     public GameObject Player;
 
@@ -41,6 +42,8 @@ public class FieldOfView : MonoBehaviour
         StartCoroutine(FOVRoutine());
        // StartCoroutine(RondeRoutine());
         rb = GetComponent<Rigidbody>();
+        PositionProchaineRonde = PositionRonde[0];
+        PositionPremiereRonde = PositionRonde[0];
     }
 
     private IEnumerator FOVRoutine()
@@ -52,18 +55,6 @@ public class FieldOfView : MonoBehaviour
         {
             yield return wait;
             FieldOfViewCheck();
-        }
-    }
-
-    private IEnumerator RondeRoutine()
-    {
-        float delay = 0.2f;
-        WaitForSeconds wait = new WaitForSeconds(delay);
-
-        while (true)
-        {
-            yield return wait;
-            Ronde();
         }
     }
 
@@ -131,16 +122,17 @@ public class FieldOfView : MonoBehaviour
 
         if (JoueurRammene)//Quand guard arrivé à point de rammennage, alors il retourne à sa position de base
         {
-            Vector3 Spawn = new Vector3(spawnPoint.position.x - transform.position.x, 0, spawnPoint.position.z - transform.position.z) * vitesse;
+            Vector3 Spawn = new Vector3(spawnPoint.position.x - transform.position.x, 0, spawnPoint.position.z - transform.position.z) * vitesse;// new Vector3(PositionPremiereRonde.position.x - transform.position.x, 0, PositionPremiereRonde.position.z - transform.position.z) * vitesse;
             rb.velocity = Spawn.normalized * vitesse;
             transform.LookAt(spawnPoint.position);
         }
 
-        if ((canSeePlayer && touchalt144 && JoueurRammene) == false)
+        if (!canSeePlayer && !touchalt144 && !JoueurRammene )
         {
-            Vector3 destination = new Vector3(PositionProchaineRonde.position.x - transform.position.x, 1, PositionProchaineRonde.position.z - transform.position.z) * vitesse;
+            Vector3 destination = new Vector3(PositionProchaineRonde.position.x - transform.position.x, 0, PositionProchaineRonde.position.z - transform.position.z) * vitesse;
+            transform.LookAt(new Vector3(PositionProchaineRonde.position.x,transform.position.y, PositionProchaineRonde.position.z));
             rb.velocity = destination.normalized * vitesse;
-            transform.LookAt(PositionProchaineRonde.position);
+
         }
     }
 
@@ -160,6 +152,7 @@ public class FieldOfView : MonoBehaviour
             canSeePlayer = false;
             touchalt144 = false;
             JoueurRammene = true;
+            y = 0;
         }
 
         if (other.tag == "PointSpawnGuard") //Si arrivé à position de base
@@ -169,23 +162,17 @@ public class FieldOfView : MonoBehaviour
             JoueurRammene = false;
             rb.velocity = new Vector3(0,0,0);
             transform.LookAt(new Vector3(0,1,0));
-            Transform PositionProchaineRonde = PositionRonde[0];
+            PositionProchaineRonde = PositionRonde[0];
         }
 
         if (other.tag == "PointRondeGuard") //Si arrivé à position de base
         {
-            if (y==PositionRonde.Capacity)
+            if (y== PositionRonde.Capacity -1)
             {
                 y = 0;
             }
-            else { y++; }
-            Transform PositionProchaineRonde = PositionRonde[y];
+            else { y++; }   
+           PositionProchaineRonde = PositionRonde[y];
         }
-    }
-
-    private void Ronde()
-    {
-
-
     }
 }

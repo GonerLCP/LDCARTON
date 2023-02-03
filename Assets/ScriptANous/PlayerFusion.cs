@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player2 : MonoBehaviour
+public class PlayerFusion : MonoBehaviour
 {
     float inputX;
     float inputZ;
@@ -22,11 +22,11 @@ public class Player2 : MonoBehaviour
 
     public Transform grab;
 
-    string[] taglist = {"Player","Carton"};
+    string[] taglist = { "Player", "Carton" };
     int x = 1;
+
     void Start()
     {
-        StartCoroutine("coroutine");
         cc = GetComponent<CharacterController>();
         GameObject.Find("PlayerCarton").GetComponent<MeshRenderer>().enabled = false;
     }
@@ -38,12 +38,12 @@ public class Player2 : MonoBehaviour
         {
 
             this.tag = taglist[x];
-            if (x==1) //si tag carton atm alors prochaine sera tag player
+            if (x == 1) //si tag carton atm alors prochaine sera tag player
             {
                 x = x - 1;
                 GameObject.Find("PlayerBonhomme").GetComponent<MeshRenderer>().enabled = false;
                 GameObject.Find("PlayerBonhommeCylinder").GetComponent<MeshRenderer>().enabled = false;
-                GameObject.Find("PlayerCarton").GetComponent<MeshRenderer>().enabled = true; 
+                GameObject.Find("PlayerCarton").GetComponent<MeshRenderer>().enabled = true;
             }
             else
             {
@@ -54,7 +54,6 @@ public class Player2 : MonoBehaviour
             }
 
         }
-
     }
     private void FixedUpdate()
     {
@@ -65,17 +64,10 @@ public class Player2 : MonoBehaviour
             {
                 mouvementY = 0;
             }
-            mouvement = new Vector3(inputX, 0, inputZ) * vitesse;
+            mouvement = Quaternion.Euler(new Vector3(0, 45, 0)) * new Vector3(inputX, 0, inputZ) * vitesse;
             cc.Move(mouvement);
             mouvementY -= gravity;
             cc.Move(new Vector3(0, mouvementY, 0));
         }
-
-    }
-
-    IEnumerator coroutine()
-    {
-        yield return new WaitForSeconds(1);
-        print("a"); 
     }
 }
